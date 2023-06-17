@@ -1,0 +1,30 @@
+/*Input*/
+
+.textInput {
+  max-width: fit-content;
+  width: 10vw;
+}
+
+.inputWithIcon {
+  display: flex;
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.inputField {
+    background-color: rgb(237, 237, 237);
+  border: 0px solid transparent;
+  padding: 10px 30px;
+  border-radius: 5px;
+  /* pour éviter que le texte ne soit masqué par l'icône */
+}
+
+.inputField:focus {
+  outline: none;    
+}
