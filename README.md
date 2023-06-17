@@ -7,4 +7,8 @@ Ouvrez le lien http://localhost:3000 dans votre navigateur
 # Bibliothèques utilisées
 - React Router Dom => Simulation de navigation
 - Axios => Data fetching
-- React Select => Pour les input
+- React Select => Pour les input à choix
+- Iconify React => Icones
+
+ # Extension utilisé
+ - Color Picker => Avoir le code HEX de la couleur d'un élément
