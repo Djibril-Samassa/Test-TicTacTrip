@@ -1,33 +1,13 @@
 /*Input*/
-
 .textInput {
-  max-width: fit-content;
-  width: 10vw;
-}
-
-.inputWithIcon {
-  /* color: #a0a8c2; */
-  display: flex;
-  position: relative;
-}
-
-.inputIcon {
-  color: #a0a8c2;
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-}
+    max-width: fit-content;
+    width: 10vw;
+  }
 
 .inputField {
-  background-color: #f1f2f6;
-  border: 0px solid transparent;
-  padding: 10px 30px;
-  border-radius: 5px;
-  /* pour éviter que le texte ne soit masqué par l'icône */
+  max-width: 25vw;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
 }
-
-.inputField:focus {
-  outline: none;
-}
-
