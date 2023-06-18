@@ -2,7 +2,9 @@
 
 ### `npm start`
 Pour lancer l'application en local
+Télécharger dabord le projet et installer les dépendances avec "npm install"
 Ouvrez le lien http://localhost:3000 dans votre navigateur
+Ou ouvrez tout simplement le lien "https://648f828772e88073cf6e03b8--cheery-rabanadas-cfbd86.netlify.app/"
 
 # Bibliothèques utilisées
 - React Router Dom => Simulation de navigation
