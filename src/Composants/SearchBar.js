@@ -27,6 +27,7 @@ export default function SearchBar() {
       color: "#a0a8c2",
       padding: "0.2em",
       margin: "0px 10px",
+      minWidth: "20vw",
     }),
   };
 
@@ -67,7 +68,9 @@ export default function SearchBar() {
 
   // Récuperer les villes les plus populaires
   // De départ ou d'arrivée avec une condition qui vérifie
-  const GetPopularCities = (event) => {
+  const GetPopularCities = (event, end) => {
+    const startCity = end?.unique_name;
+    console.log(startCity);
     if (event === "start") {
       axios.get("https://api.comparatrip.eu/cities/popular/5").then((res) => {
         // Ce sera les propositions par défaut
@@ -75,9 +78,7 @@ export default function SearchBar() {
       });
     } else if (event === "finish") {
       axios
-        .get(
-          `https://api.comparatrip.eu/cities/popular/from/${choosenCities.start.unique_name}/5`
-        )
+        .get(`https://api.comparatrip.eu/cities/popular/from/${startCity}/5`)
         .then((res) => {
           // Ce sera les propositions par défaut
           setFinishCities(res.data);
@@ -108,14 +109,6 @@ export default function SearchBar() {
       alert("Une erreur est survenue");
     }
   };
-
-  // Quand une ville de départ est sélectionnée, on récupère la liste des villes d'arrivée les plus populaires depuis ces villes
-  useEffect(() => {
-    if (choosenCities.start.unique_name) {
-      GetPopularCities("finish");
-    } else {
-    }
-  }, [choosenCities]);
 
   return (
     <div className={Style.container}>
@@ -164,6 +157,7 @@ export default function SearchBar() {
           onChange={async (option) => {
             // Quand une ville de départ est selectionnée on l'enregistre
             await setChoosenCities({ ...choosenCities, start: option });
+            GetPopularCities("finish", option);
           }}
         />
 
@@ -195,6 +189,7 @@ export default function SearchBar() {
             <DatePicker
               placeholderText="+ Ajouter date aller"
               className={Style.datePicker}
+              // Permettre la sélection que depuis le calendrier et pas manuellement
               onKeyDown={(e) => {
                 e.preventDefault();
               }}
