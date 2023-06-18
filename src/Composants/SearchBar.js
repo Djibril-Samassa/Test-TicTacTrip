@@ -70,7 +70,6 @@ export default function SearchBar() {
   // De départ ou d'arrivée avec une condition qui vérifie
   const GetPopularCities = (event, end) => {
     const startCity = end?.unique_name;
-    console.log(startCity);
     if (event === "start") {
       axios.get("https://api.comparatrip.eu/cities/popular/5").then((res) => {
         // Ce sera les propositions par défaut
