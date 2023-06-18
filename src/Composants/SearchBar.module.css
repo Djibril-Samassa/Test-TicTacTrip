@@ -8,12 +8,12 @@
   align-items: flex-start;
   width: 90vw;
   margin: 0px auto;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
 
-.container:nth-child(n){
-margin: 5px;
-/* background-color:red; */
+.container:nth-child(n) {
+  margin: 5px;
+  /* background-color:red; */
 }
 
 /*Input*/
@@ -23,10 +23,9 @@ margin: 5px;
   width: fit-content;
 }
 
-
 .inputField {
   min-width: 20vw;
-} 
+}
 
 .recherche {
   margin: 0px 20px;
@@ -87,3 +86,20 @@ input {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .flexRow,
+  .datePicker {
+    flex-direction: column;
+  }
+
+  .inputField,
+  .datePicker,
+  .recherche {
+    margin: 10px 0px;
+  }
+
+  .recherche{
+    padding: 10px 0;
+  }
+  
+}
