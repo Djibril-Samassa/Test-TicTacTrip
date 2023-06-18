@@ -6,6 +6,9 @@ import Select from "react-select";
 import { Icon } from "@iconify/react";
 
 export default function SearchBar() {
+  const [accommodation, setAccommodation] = useState(false);
+  const [travelOption, setTravelOption] = useState({});
+
   // style à appliquer sur les input de texte (S    pécifique à React Select)
   const TextInputStyle = {
     control: (base) => ({
@@ -22,7 +25,19 @@ export default function SearchBar() {
     ],
   };
 
-  const [travelOption, setTravelOption] = useState({});
+  // Les villes les plus populaires
+  const [popularCities, setPopularCities] = useState([]);
+
+  useEffect(() => {
+    GetPopularCities()
+  }, []);
+
+  // Récuperer les villes les plus populaires
+  const GetPopularCities = () => {
+    axios.get("https://api.comparatrip.eu/cities/popular/5").then((res) => {
+      setPopularCities(res.data);
+    });
+  };
 
   return (
     <div>
@@ -53,6 +68,16 @@ export default function SearchBar() {
             type="text"
             className={Style.inputField}
             placeholder="From: City, Station or Airport"
+          />
+        </div>
+
+        {/* Input avec une icone */}
+        <div className={Style.inputWithIcon}>
+          <Icon icon="game-icons:position-marker" className={Style.inputIcon} />
+          <input
+            type="text"
+            className={Style.inputField}
+            placeholder="To: City, Station or Airport"
           />
         </div>
       </div>
