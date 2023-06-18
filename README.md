@@ -22,3 +22,6 @@ J'ai utilisé des librairies pour la sélection et le choix des dates, car c'est
 J'ai utilisé axios pour le fetching de l'API et des hooks pour le stockage de données
 Je n'ai pas eu de difficulté qui m'a réelement mis mal à l'aise sauf en terme de design, de faire les choses sans trop manipuler l'élément concerné
 et j'ai un peu eu du mal avant de trouver comment modifier le style d'un composant React Select
+
+# Remarques
+J'aurais aimé ajouter une fonctionnaliré permettant de vérifier tous les champs ou même de faire un render conditionnel pour l'affichage du bouton, j'aurais aussi aimer affiché des resultats ça aurait été sympa
