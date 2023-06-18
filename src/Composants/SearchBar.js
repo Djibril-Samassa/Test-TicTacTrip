@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./SearchBar.module.css";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Icon } from "@iconify/react";
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 export default function SearchBar() {
   // style à appliquer sur les input de texte (Spécifique à React Select)
@@ -22,18 +25,26 @@ export default function SearchBar() {
       boxShadow: "none",
       backgroundColor: "#F1F2F6",
       color: "#a0a8c2",
+      padding: "0.2em",
+      margin: "0px 10px",
     }),
   };
 
   const options = {
     travelWay: [
-      { value: "Aller", label: "Aller" },
-      { value: "Aller-retour", label: "Aller-retour" },
+      { value: "aller", label: "Aller" },
+      { value: "aller-retour", label: "Aller-retour" },
+    ],
+    traveller: [
+      { value: "adulte", label: "Adulte" },
+      { value: "enfant", label: "Enfant" },
     ],
   };
 
   const [accommodation, setAccommodation] = useState(false);
-  const [travelOption, setTravelOption] = useState({});
+  const [travelOption, setTravelOption] = useState({
+    travelWay: "",
+  });
 
   // => On enregistre la ville de départ et d'arrivée
   // => L'objet entier on ne sait jamais s'il y a d'autres champs dont on aura besoin
@@ -45,6 +56,10 @@ export default function SearchBar() {
   // La liste affiché dans la Select List => Soit les villes populaires, soit la liste des villes par lettre
   const [startCities, setStartCities] = useState([]);
   const [finishCities, setFinishCities] = useState([]);
+
+  // Les dates d'aller et de retour
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     GetPopularCities("start");
@@ -96,7 +111,6 @@ export default function SearchBar() {
 
   // Quand une ville de départ est sélectionnée, on récupère la liste des villes d'arrivée les plus populaires depuis ces villes
   useEffect(() => {
-    console.log(choosenCities.start);
     if (choosenCities.start.unique_name) {
       GetPopularCities("finish");
     } else {
@@ -104,36 +118,42 @@ export default function SearchBar() {
   }, [choosenCities]);
 
   return (
-    <div>
+    <div className={Style.container}>
       {/* Informations sur le type de trajet */}
-      <div>
+      <div className={Style.flexRow}>
         <Select
-          placeholder="Aller"
+          defaultValue={options.travelWay[0]}
           className={Style.textInput}
           options={options.travelWay}
           components={{ IndicatorSeparator: () => null }}
           styles={TextInputStyle}
+          onChange={(option) => {
+            setTravelOption({ ...travelOption, travelWay: option.value });
+          }}
+          onKeyDown={(e) => {
+            e.preventDefault();
+          }}
         />
 
-        {/* <Select
-          placeholder="Aller"
+        <Select
+          defaultValue={options.traveller[0]}
           className={Style.textInput}
-          options={options}
+          options={options.traveller}
           components={{ IndicatorSeparator: () => null }}
           styles={TextInputStyle}
-        /> */}
+        />
       </div>
 
-      
       {/* Informations sur les dates et destinations du trajet */}
-      <div>
+      <div className={Style.flexRow}>
+        {/* Ville aller */}
         <Select
           onKeyDown={(e) => {
             SearchCityByName(e, "start");
           }}
           type="text"
           className={Style.inputField}
-          placeholder="From: City, Station or Airport"
+          placeholder="Depuis: ville, station ou aéroport"
           styles={TextInputStyle2}
           options={startCities}
           // Renseigner ce qui sera affiché dans la select liste si le nom de clé n'est pas "label"
@@ -147,20 +167,86 @@ export default function SearchBar() {
           }}
         />
 
-        <Select
-          type="text"
-          className={Style.inputField}
-          placeholder="To: City, Station or Airport"
-          styles={TextInputStyle2}
-          options={finishCities}
-          // Renseigner ce qui sera affiché dans la select liste si le nom de clé n'est pas "label"
-          getOptionLabel={(option) => option.local_name}
-          // Renseigner ce qui sera affiché dans la select liste si le nom de clé n'est pas "value"
-          getOptionValue={(option) => option.local_name}
+        {/* Afiiché la ville retour si l'utilisateur a choisi aller-retour */}
+        {travelOption.travelWay === "aller-retour" ? (
+          <Select
+            type="text"
+            className={Style.inputField}
+            placeholder="Vers: ville, station ou aéroport"
+            styles={TextInputStyle2}
+            options={finishCities}
+            // Renseigner ce qui sera affiché dans la select liste si le nom de clé n'est pas "label"
+            getOptionLabel={(option) => option.local_name}
+            // Renseigner ce qui sera affiché dans la select liste si le nom de clé n'est pas "value"
+            getOptionValue={(option) => option.local_name}
+          />
+        ) : null}
+
+        {/* Afficher la sélection de dates */}
+        <div className={Style.DatePickerComponent}>
+          <div className={Style.dateInput}>
+            <Icon
+              className={Style.icone}
+              icon="majesticons:calendar"
+              color="#89898a"
+              width="30"
+              height="30"
+            />
+            <DatePicker
+              placeholderText="+ Ajouter date aller"
+              className={Style.datePicker}
+              onKeyDown={(e) => {
+                e.preventDefault();
+              }}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </div>
+          {travelOption.travelWay === "aller-retour" ? (
+            <>
+              <span>|</span>
+              <div className={Style.dateInput}>
+                <DatePicker
+                  placeholderText="+ Ajouter date retour"
+                  className={Style.datePicker}
+                  onKeyDown={(e) => {
+                    e.preventDefault();
+                  }}
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                />
+              </div>
+            </>
+          ) : null}
+        </div>
+
+        <input
+          className={Style.recherche}
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+          value={"Chercher"}
         />
       </div>
+
       {/* Activer affichage d'hébergement */}
-      <div></div>
+      <div>
+        <input
+          type="checkbox"
+          className="custom-control-input"
+          id="customSwitches"
+          readOnly
+        />
+        <label for="swicth">Trouver mon hébergement</label>
+      </div>
     </div>
   );
 }
